@@ -1,11 +1,12 @@
 package udger_test
 
 import (
+	"fmt"
+	"net"
 	"testing"
+	"udger"
 
 	. "github.com/smartystreets/goconvey/convey"
-
-	"github.com/udger/udger"
 )
 
 func TestInvalidDbName(t *testing.T) {
@@ -14,6 +15,19 @@ func TestInvalidDbName(t *testing.T) {
 		So(err, ShouldNotBeNil)
 		So(udger, ShouldBeNil)
 	})
+}
+
+func TestIP(t *testing.T) {
+	u, err := udger.New("./udgerdb_v3.dat")
+	if err != nil {
+		fmt.Errorf("ERROR %v", err)
+		t.Fail()
+	}
+
+	// ip := net.ParseIP("1.0.186.186")
+	ip := net.ParseIP("2001:16b0:1003:ffff:ffff:ffff:ffff:ffff")
+	lookup, err := u.LookupIP(ip)
+	fmt.Println(lookup)
 }
 
 func TestValidDbName(t *testing.T) {
