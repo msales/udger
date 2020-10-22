@@ -6,11 +6,10 @@ import (
 	"database/sql"
 	"encoding/binary"
 	"errors"
+	"github.com/glenn-brown/golang-pkg-pcre/src/pkg/pcre"
 	"net"
 	"os"
 	"strings"
-
-	"github.com/glenn-brown/golang-pkg-pcre/src/pkg/pcre"
 )
 
 // New creates a new instance of Udger and load all the database in memory to allow fast lookup
@@ -58,7 +57,7 @@ func (udger *Udger) Lookup(ua string) (*Info, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	info.Browser = udger.Browsers[browserID]
 	if info.Browser.Family != "" {
 		info.Browser.Name = info.Browser.Family + " " + version
