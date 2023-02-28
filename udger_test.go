@@ -2,10 +2,11 @@ package udger_test
 
 import (
 	"fmt"
-	"github.com/braatvedt/udger"
-	. "github.com/smartystreets/goconvey/convey"
 	"net"
 	"testing"
+
+	"github.com/msales/udger"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestInvalidDbName(t *testing.T) {
