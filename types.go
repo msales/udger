@@ -2,13 +2,20 @@ package udger
 
 import (
 	"database/sql"
+	"net"
 	"regexp"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// Udger contains the data and exposes the Lookup(ua string) function
-type Udger struct {
+type Client interface {
+	// Lookup gathers information about the client using the provided user agent
+	Lookup(ua string) (*Info, error)
+	// LookupIP gathers information about the client using the provided IP
+	LookupIP(ip net.IP) (*IPInfo, error)
+}
+
+type udger struct {
 	db               *sql.DB
 	rexBrowsers      []rexData
 	rexDevices       []rexData

@@ -19,11 +19,6 @@ func main() {
 		os.Exit(-1)
 	}
 
-	fmt.Println(len(u.Browsers), "browsers loaded")
-	fmt.Println(len(u.OS), "OS loaded")
-	fmt.Println(len(u.Devices), "device types loaded")
-	fmt.Println("")
-
 	ua, err := u.Lookup(os.Args[2])
 	if err != nil {
 		fmt.Println("error: ", err)

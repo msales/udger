@@ -5,6 +5,8 @@ import (
 	"net"
 	"testing"
 
+	"log"
+
 	"github.com/msales/udger"
 	. "github.com/smartystreets/goconvey/convey"
 )
@@ -20,7 +22,7 @@ func TestInvalidDbName(t *testing.T) {
 func TestIP(t *testing.T) {
 	u, err := udger.New("./udgerdb_v3.dat")
 	if err != nil {
-		fmt.Errorf("ERROR %v", err)
+		log.Println(fmt.Errorf("ERROR %v", err))
 		t.Fail()
 	}
 
@@ -37,10 +39,6 @@ func TestValidDbName(t *testing.T) {
 		So(udger, ShouldNotBeNil)
 
 		Convey("test memory database", func() {
-			So(len(udger.Browsers), ShouldBeGreaterThan, 0)
-			So(len(udger.Devices), ShouldBeGreaterThan, 0)
-			So(len(udger.OS), ShouldBeGreaterThan, 0)
-
 			Convey("test lookup MAC", func() {
 				info, err := udger.Lookup("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2575.0 Safari/537.36")
 				So(err, ShouldBeNil)
