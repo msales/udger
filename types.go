@@ -2,8 +2,8 @@ package udger
 
 import (
 	"database/sql"
+	"regexp"
 
-	"github.com/glenn-brown/golang-pkg-pcre/src/pkg/pcre"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -49,7 +49,7 @@ type Browser struct {
 type rexData struct {
 	ID            int
 	Regex         string
-	RegexCompiled pcre.Regexp
+	RegexCompiled *regexp.Regexp
 }
 
 // OS contains all the information about the operating system
@@ -70,7 +70,7 @@ type IPInfo struct {
 	IP               IP               `json:"ip"`
 	IPClass          IPClass          `json:"ip_class"`
 	Crawler          Crawler          `json:"crawler"`
-	CrawlerClass     CrawlerClass          `json:"crawler_class"`
+	CrawlerClass     CrawlerClass     `json:"crawler_class"`
 	DataCenter       DataCenter       `json:"data_center"`
 	DataCenterRange  DataCenterRange  `json:"data_center_range"`
 	DataCenterRange6 DataCenterRange6 `json:"data_center_range6"`

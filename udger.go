@@ -5,10 +5,9 @@ import (
 	"bytes"
 	"database/sql"
 	"encoding/binary"
-	"errors"
-	"github.com/glenn-brown/golang-pkg-pcre/src/pkg/pcre"
 	"net"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -169,7 +168,6 @@ func (udger *Udger) LookupIP(ip net.IP) (*IPInfo, error) {
 	return info, nil
 }
 
-
 func (udger *Udger) cleanRegex(r string) string {
 	if strings.HasSuffix(r, "/si") {
 		r = r[:len(r)-3]
@@ -196,14 +194,14 @@ func (udger *Udger) findDataWithVersion(ua string, data []rexData, withVersion b
 func (udger *Udger) findData(ua string, data []rexData, withVersion bool) (idx int, value string, err error) {
 	for i := 0; i < len(data); i++ {
 		r := data[i].RegexCompiled
-		matcher := r.MatcherString(ua, 0)
-		if !matcher.MatchString(ua, 0) {
+		if !r.MatchString(ua) {
 			continue
 		}
 
-		if withVersion && matcher.Present(1) {
-			return data[i].ID, matcher.GroupString(1), nil
-		}
+		// TODO: implement regex for browser version and name support
+		//if withVersion && matcher.Present(1) {
+		//return data[i].ID, matcher.GroupString(1), nil
+		//}
 
 		return data[i].ID, "", nil
 	}
@@ -220,9 +218,9 @@ func (udger *Udger) init() error {
 		var d rexData
 		rows.Scan(&d.ID, &d.Regex)
 		d.Regex = udger.cleanRegex(d.Regex)
-		r, err := pcre.Compile(d.Regex, pcre.CASELESS)
+		r, err := regexp.Compile("(?i)" + d.Regex)
 		if err != nil {
-			return errors.New(err.String())
+			return err
 		}
 		d.RegexCompiled = r
 		udger.rexBrowsers = append(udger.rexBrowsers, d)
@@ -237,9 +235,9 @@ func (udger *Udger) init() error {
 		var d rexData
 		rows.Scan(&d.ID, &d.Regex)
 		d.Regex = udger.cleanRegex(d.Regex)
-		r, err := pcre.Compile(d.Regex, pcre.CASELESS)
+		r, err := regexp.Compile("(?i)" + d.Regex)
 		if err != nil {
-			return errors.New(err.String())
+			return err
 		}
 		d.RegexCompiled = r
 		udger.rexDevices = append(udger.rexDevices, d)
@@ -254,9 +252,9 @@ func (udger *Udger) init() error {
 		var d rexData
 		rows.Scan(&d.ID, &d.Regex)
 		d.Regex = udger.cleanRegex(d.Regex)
-		r, err := pcre.Compile(d.Regex, pcre.CASELESS)
+		r, err := regexp.Compile("(?i)" + d.Regex)
 		if err != nil {
-			return errors.New(err.String())
+			return err
 		}
 		d.RegexCompiled = r
 		udger.rexOS = append(udger.rexOS, d)
